@@ -1,0 +1,12 @@
+	(1)	(2)	(3)	(4)
+VARIABLES	chg_ppent	chg_intan	chg_cash	equity_payout
+				
+debt_issue	0.459***	0.398***	0.077***	-0.090***
+	(112.67)	(87.02)	(26.59)	(-32.09)
+Constant	0.013***	-0.015***	-0.005***	0.010***
+	(13.26)	(-13.67)	(-7.00)	(13.79)
+				
+Observations	28,707	24,805	28,756	28,761
+R-squared	0.307	0.234	0.024	0.035
+t-statistics in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
