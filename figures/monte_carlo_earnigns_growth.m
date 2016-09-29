@@ -1,29 +1,24 @@
-function monte_carlo_earnigns_growth(scenario_id)
+function monte_carlo_earnigns_growth(inst_id)
 
 	addpath ../model
-	
-   rng(1);
 
    if nargin < 1
-		scenario_id = 1;
+		inst_id = 1;
 	end
 	
+   rng(inst_id);
+	
+	scenario_id = 1;
 	
 	load_parameters();
 	load_scenario(scenario_id);
 
-% 	optimization(scenario_id);
-	
-	run_monte_carlo(scenario_id);
-
-	monte_carlo_print_summary(scenario_id);
+	run_monte_carlo(inst_id);
 
 end
 
 
-
-
-function run_monte_carlo(scenario_id)
+function run_monte_carlo(inst_id)
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Simulation parameters
@@ -42,13 +37,13 @@ function run_monte_carlo(scenario_id)
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	fprintf(1, '****************************************************\n');
-	fprintf(1, '* Scenario ID: %d\n', scenario_id);
+	fprintf(1, '* Instance ID: %d\n', inst_id);
 	fprintf(1, '* #simulations: %d, #years: %d, #firms: %d\n', no_simulations, no_years, N);
 	fprintf(1, '****************************************************\n\n');
 	
 	output_stack = zeros(no_simulations, 10);
 	
-	output_filename = sprintf('simulation_outputs/monte_carlo_earnigns_growth%03d.csv', scenario_id);
+	output_filename = sprintf('simulation_outputs/monte_carlo_earnigns_growth%03d.csv', inst_id);
 	
 	
 	for sim_id = 1:no_simulations
