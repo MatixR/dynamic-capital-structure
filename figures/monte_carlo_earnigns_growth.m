@@ -1,7 +1,7 @@
 function monte_carlo_earnigns_growth(scenario_id)
 
 	addpath ../model
-
+	
 	rng(1);
 
    if nargin < 1
@@ -94,7 +94,7 @@ function run_monte_carlo(scenario_id)
 		output(1:3) = output(1:3) * 12;
 		output(4:9) = output(4:9) * sqrt(12);
 
-		
+
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		% 10-year default probability
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
