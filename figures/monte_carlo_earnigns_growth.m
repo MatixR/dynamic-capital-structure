@@ -1,8 +1,11 @@
 function monte_carlo_earnigns_growth(inst_id)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	addpath ../model
 =======
+=======
+>>>>>>> parent of ba7bcad... Merge pull request #2 from dioscuroi/default-prob
 	addpath ../extension
 	
    rng(1);
