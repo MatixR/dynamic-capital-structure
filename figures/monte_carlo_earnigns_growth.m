@@ -1,33 +1,29 @@
-function monte_carlo_earnigns_growth(inst_id)
+function monte_carlo_earnigns_growth(scenario_id)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	addpath ../model
-=======
-=======
->>>>>>> parent of ba7bcad... Merge pull request #2 from dioscuroi/default-prob
-	addpath ../extension
-	
-   rng(1);
->>>>>>> parent of ba7bcad... Merge pull request #2 from dioscuroi/default-prob
+
+	rng(1);
 
    if nargin < 1
-		inst_id = 1;
+		scenario_id = 1;
 	end
 	
-   rng(inst_id);
-	
-	scenario_id = 1;
 	
 	load_parameters();
 	load_scenario(scenario_id);
 
-	run_monte_carlo(inst_id);
+% 	optimization(scenario_id);
+	
+	run_monte_carlo(scenario_id);
+
+	monte_carlo_print_summary(scenario_id);
 
 end
 
 
-function run_monte_carlo(inst_id)
+
+
+function run_monte_carlo(scenario_id)
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Simulation parameters
@@ -37,7 +33,7 @@ function run_monte_carlo(inst_id)
 	no_years = 60;
 	
 	T = no_years * 12;
-	N = 100;
+	N = 10;
 
 	
 	
@@ -46,13 +42,13 @@ function run_monte_carlo(inst_id)
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	fprintf(1, '****************************************************\n');
-	fprintf(1, '* Instance ID: %d\n', inst_id);
+	fprintf(1, '* Scenario ID: %d\n', scenario_id);
 	fprintf(1, '* #simulations: %d, #years: %d, #firms: %d\n', no_simulations, no_years, N);
 	fprintf(1, '****************************************************\n\n');
 	
 	output_stack = zeros(no_simulations, 10);
 	
-	output_filename = sprintf('simulation_outputs/monte_carlo_earnigns_growth%03d.csv', inst_id);
+	output_filename = sprintf('simulation_outputs/monte_carlo_earnigns_growth%03d.csv', scenario_id);
 	
 	
 	for sim_id = 1:no_simulations
@@ -98,8 +94,39 @@ function run_monte_carlo(inst_id)
 		output(1:3) = output(1:3) * 12;
 		output(4:9) = output(4:9) * sqrt(12);
 
-		default_first_10years = any( simulated.ind_default(1:120,:), 1 );
-		default_prob = sum(default_first_10years) / N;
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		% 10-year default probability
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		% build the stack of starting point
+		starting_points = zeros(N, 2); % coordinates (i,j) of new birth/refinance
+		starting_points(:,2) = (1:N)';
+		
+		[i,j] = find(simulated.ind_default);
+		starting_points = [starting_points; [i,j]];
+
+		[i,j] = find(simulated.ind_refinan);
+		starting_points = [starting_points; [i,j]];
+		
+		% count the number of defaults within 10 years after birth/refinance
+		no_defaults = 0;
+		no_starts = size(starting_points, 1);
+		
+		for id = 1:no_starts
+			i = starting_points(id,1);
+			j = starting_points(id,2);
+
+			if i+120 <= T
+				default = find( simulated.ind_default((i+1):(i+120), j) );
+			else
+				default = find( simulated.ind_default((i+1):end, j) );
+			end
+			
+			no_defaults = no_defaults + ~isempty(default);
+		end
+
+		default_prob = no_defaults / no_starts;
 		
 		output(10) = default_prob;
 		
