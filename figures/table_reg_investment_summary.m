@@ -12,11 +12,14 @@ function table_reg_investment_summary()
 
 	for machine = 1:no_machiens
 
-		filename = sprintf('simulation_outputs/table_reg_investment%04d.csv', machine);
+		try
+			filename = sprintf('simulation_outputs/table_reg_investment%04d.csv', machine);
 
-		this_output = dlmread(filename, '\t');
+			this_output = dlmread(filename, '\t');
 
-		total_outputs = [total_outputs; this_output];
+			total_outputs = [total_outputs; this_output];
+		catch
+		end
 
 	end
 
@@ -26,9 +29,9 @@ function table_reg_investment_summary()
 	fprintf(1, '\n');
 	fprintf(1, '# simulations: %d\n', no_simultaions);
 
-	pctile05 = prctile( total_outputs, 5 );
-	pctile50 = prctile( total_outputs, 50 );
-	pctile95 = prctile( total_outputs, 95 );
+	pctile05 = prctile( total_outputs, 5 , 1 );
+	pctile50 = prctile( total_outputs, 50, 1 );
+	pctile95 = prctile( total_outputs, 95, 1 );
 
 	pval = sum( (total_outputs < 0), 1) / no_simultaions;
 	pval = min( pval, 1 - pval );
@@ -38,16 +41,22 @@ function table_reg_investment_summary()
 
 	% Print the output
 	fprintf(1, '\n* Homogenous - Q alone\n\n');
-	print_item( outputs, (1:3) );
+	print_item( outputs, (2:3) );
+	
+	fprintf(1, '\n* Homogenous - profitability alone\n\n');
+	print_item( outputs, (5:6) );
 	
 	fprintf(1, '\n* Homogenous - all three\n\n');
-	print_item( outputs, (4:8) );
+	print_item( outputs, (8:11) );
 	
 	fprintf(1, '\n* Heterogenous - Q alone\n\n');
-	print_item( outputs, (9:11) );
+	print_item( outputs, (13:14) );
+	
+	fprintf(1, '\n* Heterogenous - profitability alone\n\n');
+	print_item( outputs, (16:17) );
 	
 	fprintf(1, '\n* Heterogenous - all three\n\n');
-	print_item( outputs, (12:16) );
+	print_item( outputs, (19:22) );
 	
 end
 
@@ -60,7 +69,7 @@ function print_item(outputs, ids)
 		
 		fprintf(1, '%.3f', outputs(i, 2));
 		
-		if i ~= ids(1)
+		if i ~= ids(end)
 			if outputs(i, 4) < 0.01
 				fprintf(1, '***');
 			elseif outputs(i, 4) < 0.05
