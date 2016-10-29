@@ -37,17 +37,17 @@ function table_reg_investment_summary()
 
 
 	% Print the output
-	fprintf(1, '\n* Q alone\n\n');
-	print_item( outputs, [3 1] );
+	fprintf(1, '\n* Homogenous - Q alone\n\n');
+	print_item( outputs, (1:3) );
 	
-	fprintf(1, '\n* Q and cashflow\n\n');
-	print_item( outputs, [12 13 10] );
+	fprintf(1, '\n* Homogenous - all three\n\n');
+	print_item( outputs, (4:8) );
 	
-	fprintf(1, '\n* Q and leverage\n\n');
-	print_item( outputs, [16 17 14] );
+	fprintf(1, '\n* Heterogenous - Q alone\n\n');
+	print_item( outputs, (9:11) );
 	
-	fprintf(1, '\n* All three\n\n');
-	print_item( outputs, [20 21 22 18] );
+	fprintf(1, '\n* Heterogenous - all three\n\n');
+	print_item( outputs, (12:16) );
 	
 end
 
@@ -60,7 +60,7 @@ function print_item(outputs, ids)
 		
 		fprintf(1, '%.3f', outputs(i, 2));
 		
-		if i ~= ids(end)
+		if i ~= ids(1)
 			if outputs(i, 4) < 0.01
 				fprintf(1, '***');
 			elseif outputs(i, 4) < 0.05
