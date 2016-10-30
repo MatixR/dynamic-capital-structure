@@ -81,7 +81,7 @@ function print_item(outputs, ids)
 		
 		fprintf(1, '\n');
 		
-		fprintf(1, '[%.3f, %.3f]\n', outputs(i,1), outputs(i,3));
+		fprintf(1, '[%.2f, %.2f]\n', outputs(i,1), outputs(i,3));
 			
 	end
 end
