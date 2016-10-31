@@ -17,7 +17,7 @@ global alpha m
 
 load_parameters();
 
-% Compustat sample: 44 years (1972-2015), 1753.7 firms per year on average
+% Compustat sample: 44 years (1972-2015), 1489 firms per year on average
 years_to_simulate = 84;
 years_to_drop     = 40;
 

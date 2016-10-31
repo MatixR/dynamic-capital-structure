@@ -16,11 +16,12 @@ global alpha m
 
 load_parameters();
 
-years_to_simulate = 60;
-years_to_drop     = 20;
+% Compustat sample: 44 years (1972-2015), 1489 firms per year on average
+years_to_simulate = 84;
+years_to_drop     = 40;
 
 T = years_to_simulate * 12;
-N = 100;
+N = 165;
 
 senario_ids = [1 3 14 23 (28:32)];
 no_scenarios = length(senario_ids);
