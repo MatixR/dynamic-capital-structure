@@ -22,7 +22,7 @@ years_to_simulate = 84;
 years_to_drop     = 40;
 
 T = years_to_simulate * 12;
-N = 200;
+N = 165;
 
 senario_ids = [1 3 14 23 (28:32)];
 no_scenarios = length(senario_ids);
