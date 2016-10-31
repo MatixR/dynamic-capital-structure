@@ -6,7 +6,7 @@ graph drop _all
 
 local options = "stats(coef tstat) bdec(3) tdec(2)"
 
-cd "/Users/dioscuroi/Dropbox/Research/dynamic capital structure/codes/empirical/"
+cd "/Users/dioscuroi/GitHub/dynamic-capital-structure/empirical/"
 
 !rm reg_invest_on_Q_profit_lev*.txt
 

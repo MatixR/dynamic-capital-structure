@@ -10,7 +10,7 @@ clear gcf;
 dbstop if error;
 dbstop if warning;
 
-addpath ../extension
+addpath ../model
 
 tic
 

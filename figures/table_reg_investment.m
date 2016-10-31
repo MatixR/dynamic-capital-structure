@@ -3,13 +3,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function table_reg_investment(inst_id)
 
-addpath ../extension
+addpath ../model
 
 if nargin == 0
 	inst_id = 1;
 end
 
-% rng('shuffle');
 rng(inst_id);
 
 
@@ -18,21 +17,21 @@ global alpha m
 
 load_parameters();
 
-years_to_simulate = 100;
-years_to_drop     = 10;
+% Compustat sample: 44 years (1972-2015), 1489 firms per year on average
+years_to_simulate = 84;
+years_to_drop     = 40;
 
 T = years_to_simulate * 12;
-N = 100;
+N = 165;
 
 senario_ids = [1 3 14 23 (28:32)];
 no_scenarios = length(senario_ids);
 
 
 % the tables to store results for every simulation
+reg_results = [];
+
 no_simulations = 100;
-
-reg_results = zeros(no_simulations, 3+3+3+4+4+5);
-
 
 for sim_id = 1:no_simulations
 	
@@ -119,65 +118,54 @@ for sim_id = 1:no_simulations
 
 	end
 	
+	this_reg_result = [];
 	
-	s = regstats(reg_deps, reg_indeps(:,1), 'linear', {'tstat','rsquare'} );
-	fprintf(1, 'Regression - Q alone, R2: %.3f\n', s.rsquare);
+	s = regstats(reg_deps(1:reg_no_obs), reg_indeps(1:reg_no_obs,1), 'linear', {'tstat','rsquare'} );
+	fprintf(1, 'Homogenous - Q alone, R2: %.3f\n', s.rsquare);
 	[s.tstat.beta s.tstat.t]
 	
-	reg_results(sim_id, 1)   = s.rsquare;
-	reg_results(sim_id, 2:3) = s.tstat.beta';
+	this_reg_result = [this_reg_result s.tstat.beta' s.rsquare];
 
+	s = regstats(reg_deps(1:reg_no_obs), reg_indeps(1:reg_no_obs,2), 'linear', {'tstat','rsquare'} );
+	fprintf(1, 'Homogenous - profitability alone, R2: %.3f\n', s.rsquare);
+	[s.tstat.beta s.tstat.t]
+	
+	this_reg_result = [this_reg_result s.tstat.beta' s.rsquare];
+
+	s = regstats(reg_deps(1:reg_no_obs), reg_indeps(1:reg_no_obs,1:3), 'linear', {'tstat','rsquare'} );
+	fprintf(1, 'Homogenous - Q, profitability and leverage, R2: %.3f\n', s.rsquare);
+	[s.tstat.beta s.tstat.t]
+	
+	this_reg_result = [this_reg_result s.tstat.beta' s.rsquare];
+
+	s = regstats(reg_deps, reg_indeps(:,1), 'linear', {'tstat','rsquare'} );
+	fprintf(1, 'Heterogenous - Q alone, R2: %.3f\n', s.rsquare);
+	[s.tstat.beta s.tstat.t]
+	
+	this_reg_result = [this_reg_result s.tstat.beta' s.rsquare];
 
 	s = regstats(reg_deps, reg_indeps(:,2), 'linear', {'tstat','rsquare'} );
-	fprintf(1, 'Regression - profitability alone, R2: %.3f\n', s.rsquare);
+	fprintf(1, 'Heterogenous - profitability alone, R2: %.3f\n', s.rsquare);
 	[s.tstat.beta s.tstat.t]
-
-	reg_results(sim_id, 4)   = s.rsquare;
-	reg_results(sim_id, 5:6) = s.tstat.beta';
 	
-	
-	s = regstats(reg_deps, reg_indeps(:,3), 'linear', {'tstat','rsquare'} );
-	fprintf(1, 'Regression - leverage alone, R2: %.3f\n', s.rsquare);
-	[s.tstat.beta s.tstat.t]
-
-	reg_results(sim_id, 7)   = s.rsquare;
-	reg_results(sim_id, 8:9) = s.tstat.beta';
-	
-	
-	s = regstats(reg_deps, reg_indeps(:,1:2), 'linear', {'tstat','rsquare'} );
-	fprintf(1, 'Regression - Q and profitability, R2: %.3f\n', s.rsquare);
-	[s.tstat.beta s.tstat.t]
-
-	reg_results(sim_id, 10)    = s.rsquare;
-	reg_results(sim_id, 11:13) = s.tstat.beta';
-	
-	
-	s = regstats(reg_deps, reg_indeps(:,[1 3]), 'linear', {'tstat','rsquare'} );
-	fprintf(1, 'Regression - Q and leverage, R2: %.3f\n', s.rsquare);
-	[s.tstat.beta s.tstat.t]
-
-	reg_results(sim_id, 14)    = s.rsquare;
-	reg_results(sim_id, 15:17) = s.tstat.beta';
-	
+	this_reg_result = [this_reg_result s.tstat.beta' s.rsquare];
 	
 	s = regstats(reg_deps, reg_indeps(:,1:3), 'linear', {'tstat','rsquare'} );
-	fprintf(1, 'Regression - Q, profitability and leverage, R2: %.3f\n', s.rsquare);
+	fprintf(1, 'Heterogenous - Q, profitability and leverage, R2: %.3f\n', s.rsquare);
 	[s.tstat.beta s.tstat.t]
 	
-	reg_results(sim_id, 18)    = s.rsquare;
-	reg_results(sim_id, 19:22) = s.tstat.beta';
+	this_reg_result = [this_reg_result s.tstat.beta' s.rsquare];
 
 
+	% append the regressino results to the stack
+	reg_results = [reg_results; this_reg_result];
+	
 	filename = sprintf('simulation_outputs/table_reg_investment%04d.csv', inst_id);
 	dlmwrite(filename, reg_results(1:sim_id,:), 'delimiter', '\t');
 	
 	fprintf(1, '\n\n\n');
 	
 end
-
-toc
-
-
 
 
 
