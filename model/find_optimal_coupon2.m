@@ -11,7 +11,7 @@ function find_optimal_coupon2()
 	initial_guess = coupons(2);
 	
 	tol_fun = mean(B0 + S0) / (10^5);
-	tol_x   = coupons(2) / (5 * 10^3);
+	tol_x   = coupons(2) / (10^4);
 	
 % 	assert(tol_fun > 0);
 

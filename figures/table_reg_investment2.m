@@ -1,7 +1,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % table_reg_investment
+%
+% - temporary file to simulate very constrained firms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function table_reg_investment(inst_id)
+function table_reg_investment2(inst_id)
 
 addpath ../model
 
@@ -25,8 +27,8 @@ T = years_to_simulate * 12;
 N = 165;
 
 % senario_ids = [1 3 14 23 (28:32)];	% representative firms
-senario_ids = (33:41);	% more constrained firms
-% senario_ids = (42:50);	% very constrained firms
+% senario_ids = (33:41);	% more constrained firms
+senario_ids = (42:50);	% very constrained firms
 no_scenarios = length(senario_ids);
 
 
@@ -162,7 +164,7 @@ for sim_id = 1:no_simulations
 	% append the regressino results to the stack
 	reg_results = [reg_results; this_reg_result];
 	
-	filename = sprintf('simulation_outputs/table_reg_investment_%02d.csv', inst_id);
+	filename = sprintf('simulation_outputs/table_reg_investment2_%02d.csv', inst_id);
 	dlmwrite(filename, reg_results(1:sim_id,:), 'delimiter', '\t');
 	
 	fprintf(1, '\n\n\n');
