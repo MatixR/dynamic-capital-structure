@@ -1,7 +1,7 @@
 function optimization(id)
 
     if nargin < 1
-        id = 32;
+        id = 33;
     end
 
 	fprintf(1, '*************************************\n');
@@ -13,7 +13,7 @@ function optimization(id)
 % 	dbstop if error
 % 	dbstop if warning
     
-	global alpha m theta sigma_x_s sigma_x_id tax recovery f
+	global alpha m theta sigma_x_s sigma_x_id tax recovery iota f
 	global X_D X_U capital coupons B0 S0
 	global fid_output
 	
@@ -27,6 +27,7 @@ function optimization(id)
 	fprintf(1, 'sigma_x_id : %.4f\n', sigma_x_id);
 	fprintf(1, 'tax        : %.2f\n', tax);
 	fprintf(1, 'recovery   : %.2f/%.2f\n', recovery(1), recovery(2));
+	fprintf(1, 'debt issue : %.2f/%.2f\n', iota(1), iota(2));
 	fprintf(1, '\n\n');
 	
 % 	iterate_stack_to_find_initial_guess();
@@ -38,7 +39,7 @@ function optimization(id)
 	fprintf(1, 'coupons  : %.4f/%.4f\n', coupons(1), coupons(2) );
 	fprintf(1, '\n\n');
 
-	filename = sprintf('output%03d.csv', id);
+	filename = sprintf('outputs/optimization%03d.csv', id);
 	fid_output = fopen(filename, 'w');
 	
 	find_optimal_coupon2();
