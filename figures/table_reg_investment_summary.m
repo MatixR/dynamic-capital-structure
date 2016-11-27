@@ -14,7 +14,7 @@ function table_reg_investment_summary()
 
 		try
 % 			filename = sprintf('simulation_outputs/table_reg_investment%04d.csv', machine);
-			filename = sprintf('simulation_outputs/table_reg_investment_%02d.csv', machine);
+			filename = sprintf('simulation_outputs/table_reg_investment3_%02d.csv', machine);
 
 			this_output = dlmread(filename, '\t');
 
