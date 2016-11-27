@@ -1,6 +1,6 @@
 #!/bin/bash
  
-#PBS -N reg_invest2
+#PBS -N reg_invest3
 #PBS -l nodes=1:ppn=1
 #PBS -l vmem=8gb
 #PBS -l walltime=48:00:00
@@ -11,7 +11,7 @@
  
 cd $PBS_O_WORKDIR
 
-matlab -nodesktop -nosplash - nojvm -r "table_reg_investment2(${PBS_ARRAYID})" &> ${PBS_JOBNAME}.out
+matlab -nodesktop -nosplash - nojvm -r "table_reg_investment3(${PBS_ARRAYID})" &> ${PBS_JOBNAME}.out
 
 
 

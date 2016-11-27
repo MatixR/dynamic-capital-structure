@@ -7,7 +7,7 @@
 #PBS -j oe
 ##PBS -M dioscuroi@gmail.com
 #PBS -m ae
-#PBS -t 33-50
+#PBS -t 51-59
  
 cd $PBS_O_WORKDIR
 
