@@ -27,7 +27,7 @@ function optimization(id)
 	fprintf(1, 'sigma_x_id : %.4f\n', sigma_x_id);
 	fprintf(1, 'tax        : %.2f\n', tax);
 	fprintf(1, 'recovery   : %.2f/%.2f\n', recovery(1), recovery(2));
-	fprintf(1, 'debt issue : %.2f/%.2f\n', iota(1), iota(2));
+	fprintf(1, 'debt issue : %.3f/%.3f\n', iota(1), iota(2));
 	fprintf(1, '\n\n');
 	
 % 	iterate_stack_to_find_initial_guess();
